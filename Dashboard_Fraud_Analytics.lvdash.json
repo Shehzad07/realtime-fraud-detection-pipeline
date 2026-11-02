@@ -1,0 +1,107 @@
+{
+  "datasets": [
+    {
+      "name": "e3c3123d",
+      "displayName": "kpi_summary",
+      "queryLines": [
+        "SELECT\r\n",
+        "  SUM(total_transactions)                                        AS total_transactions,\r\n",
+        "  SUM(fraud_transactions)                                        AS fraud_transactions,\r\n",
+        "  ROUND(SUM(fraud_transactions) / SUM(total_transactions) * 100, 3) AS fraud_rate_pct,\r\n",
+        "  ROUND(SUM(fraud_amount), 2)                                    AS fraud_amount\r\n",
+        "FROM realtime_fraud_detection.gold.hourly_fraud_summary"
+      ]
+    },
+    {
+      "name": "4e4675ec",
+      "displayName": "hourly_fraud_trend",
+      "queryLines": [
+        "SELECT hour_since_start, fraud_transactions, fraud_rate_pct, ROUND(fraud_amount, 2) AS fraud_amount\r\n",
+        "FROM realtime_fraud_detection.gold.hourly_fraud_summary\r\n",
+        "ORDER BY hour_since_start"
+      ]
+    },
+    {
+      "name": "2aed9f23",
+      "displayName": "fraud_vs_legit",
+      "queryLines": [
+        "SELECT label, total_transactions, ROUND(avg_amount, 2) AS avg_amount, ROUND(median_amount, 2) AS median_amount\r\n",
+        "FROM realtime_fraud_detection.gold.fraud_class_summary"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "97296c87",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "fraud-transactions-by-hour",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "4e4675ec",
+                  "fields": [
+                    {
+                      "name": "hour_since_start",
+                      "expression": "`hour_since_start`"
+                    },
+                    {
+                      "name": "sum(fraud_transactions)",
+                      "expression": "SUM(`fraud_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-size: 14px;\">Fraud Transactions by Hour</span>",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "hour_since_start",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(fraud_transactions)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
