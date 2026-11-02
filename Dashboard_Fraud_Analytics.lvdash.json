@@ -33,7 +33,7 @@
   "pages": [
     {
       "name": "97296c87",
-      "displayName": "Untitled page",
+      "displayName": "Overview",
       "layout": [
         {
           "widget": {
@@ -49,11 +49,11 @@
                       "expression": "`hour_since_start`"
                     },
                     {
-                      "name": "sum(fraud_transactions)",
-                      "expression": "SUM(`fraud_transactions`)"
+                      "name": "fraud_transactions",
+                      "expression": "`fraud_transactions`"
                     }
                   ],
-                  "disaggregated": false
+                  "disaggregated": true
                 }
               }
             ],
@@ -61,7 +61,7 @@
               "frame": {
                 "showTitle": true,
                 "title": {
-                  "value": "<span style=\"font-size: 14px;\">Fraud Transactions by Hour</span>",
+                  "value": "<span style=\"font-size: 18px;font-weight: 700;\">Fraud Transactions by Hour</span>",
                   "fields": []
                 }
               },
@@ -70,12 +70,18 @@
               "encodings": {
                 "x": {
                   "fieldName": "hour_since_start",
+                  "axis": {
+                    "title": "Hours since start"
+                  },
                   "scale": {
                     "type": "quantitative"
                   }
                 },
                 "y": {
-                  "fieldName": "sum(fraud_transactions)",
+                  "fieldName": "fraud_transactions",
+                  "axis": {
+                    "title": "Fraud Transactions"
+                  },
                   "scale": {
                     "type": "quantitative"
                   }
@@ -88,9 +94,364 @@
           },
           "position": {
             "x": 0,
-            "y": 0,
+            "y": 4,
             "width": 6,
             "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "658d3af1",
+            "multilineTextboxSpec": {
+              "lines": [
+                "# Fraud Detection Analytics\n",
+                "\n",
+                "**Medallion pipeline (Bronze → Silver → Gold)** · 283,725 clean transactions · 48-hour window"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "fraud-amount-by-hour",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "4e4675ec",
+                  "fields": [
+                    {
+                      "name": "hour_since_start",
+                      "expression": "`hour_since_start`"
+                    },
+                    {
+                      "name": "fraud_amount",
+                      "expression": "`fraud_amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Fraud Amount by Hour</span>",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "hour_since_start",
+                  "axis": {
+                    "title": "Hours since start"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "fraud_amount",
+                  "axis": {
+                    "title": "Fraud Amount"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 4,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "fraud-vs-legit-transactions",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2aed9f23",
+                  "fields": [
+                    {
+                      "name": "label",
+                      "expression": "`label`"
+                    },
+                    {
+                      "name": "avg_amount",
+                      "expression": "`avg_amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Average Amount: Fraud vs Legit</span>",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "label",
+                  "axis": {
+                    "title": "Transaction type"
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg_amount",
+                  "axis": {
+                    "title": "Average Amount"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 12,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "total-transactions",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e3c3123d",
+                  "fields": [
+                    {
+                      "name": "sum(total_transactions)",
+                      "expression": "SUM(`total_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Total Transactions</span>",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(total_transactions)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    },
+                    "hideGroupSeparator": false
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "fraud-amount1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e3c3123d",
+                  "fields": [
+                    {
+                      "name": "sum(fraud_amount)",
+                      "expression": "SUM(`fraud_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Fraud Amount</span>",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(fraud_amount)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    },
+                    "hideGroupSeparator": false
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "fraud-transactions-1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e3c3123d",
+                  "fields": [
+                    {
+                      "name": "sum(fraud_transactions)",
+                      "expression": "SUM(`fraud_transactions`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Fraud Transactions</span>",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(fraud_transactions)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "fraud-rate-percent",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "e3c3123d",
+                  "fields": [
+                    {
+                      "name": "sum(fraud_rate_pct)",
+                      "expression": "SUM(`fraud_rate_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "<span style=\"font-weight: 700;font-size: 18px;\">Fraud Rate %</span>",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(fraud_rate_pct)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 3,
+            "height": 2
           }
         }
       ],
