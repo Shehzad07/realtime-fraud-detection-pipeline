@@ -9,7 +9,7 @@ I built it to get hands-on with the Bronze / Silver / Gold pattern, Structured S
 
 ```mermaid
 flowchart LR
-    A["Kaggle CSV<br/>(landing volume)"] --> B[("Bronze<br/>raw_transactions")]
+    A["Kaggle CSV<br/>(landing volume)"] --> B[("Bronze<br/>transactions")]
     B --> C{"Validate each<br/>micro-batch"}
     C -->|clean rows| D[("Silver<br/>cleaned_transactions")]
     C -->|rejected + reason| E[("Quarantine<br/>quarantine_transactions")]
